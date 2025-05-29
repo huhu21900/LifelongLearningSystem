@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>智启学涯 - 终身学习平台</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<link rel="stylesheet" href="./layui/css/layui.css">
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css">
+	<style>
+		:root {
+			--primary-blue: #4A90E2;
+			--secondary-blue: #66C2FF;
+			--accent-orange: #FF9F3B;
+			--light-orange: #FFD494;
+			--neutral-dark: #333333;
+			--neutral-light: #F5F7FA;
+			--glass-effect: rgba(255, 255, 255, 0.1);
+		}
+
+		* {
+			margin: 0;
+			padding: 0;
+			box-sizing: border-box;
+		}
+
+		html, body {
+			height: 100%;
+			margin: 0;
+			background-color: var(--neutral-light);
+			font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+		}
+
+		/* 导航栏美化 */
+		#header {
+			background: linear-gradient(135deg, var(--primary-blue), var(--secondary-blue));
+			backdrop-filter: blur(10px);
+			box-shadow: 0 4px 12px rgba(74, 144, 226, 0.15);
+			padding: 16px 24px;
+			position: fixed;
+			top: 0;
+			left: 0;
+			width: 100%;
+			z-index: 999;
+			display: flex;
+			align-items: center;
+			justify-content: space-between;
+			transition: all 0.3s ease;
+		}
+
+		/* 滚动时导航栏效果 */
+		#header.scroll {
+			padding: 12px 24px;
+			box-shadow: 0 6px 16px rgba(74, 144, 226, 0.2);
+		}
+
+		.nav-logo img {
+			height: 48px;
+			filter: drop-shadow(0 2px 4px rgba(255,255,255,0.2));
+			transition: transform 0.3s ease;
+		}
+
+		.nav-logo img:hover {
+			transform: scale(1.05);
+		}
+
+		#nav-toggle {
+			display: none;
+			font-size: 28px;
+			color: rgba(255,255,255,0.9);
+			background: none;
+			border: none;
+			cursor: pointer;
+			padding: 8px;
+			transition: transform 0.3s ease;
+		}
+
+		#nav-toggle:hover {
+			transform: rotate(90deg);
+		}
+
+		.navs {
+			flex: 1;
+			display: flex;
+			justify-content: flex-end;
+			align-items: center;
+		}
+
+		.navs ul {
+			display: flex;
+			list-style: none;
+			padding: 0;
+			margin: 0;
+			flex-wrap: wrap;
+		}
+
+		.navs li {
+			margin: 0 8px;
+		}
+
+		.navs a {
+			color: #fff;
+			text-decoration: none;
+			font-size: 16px;
+			padding: 12px 24px;
+			border-radius: 24px;
+			background: linear-gradient(90deg, transparent, var(--glass-effect));
+			display: flex;
+			align-items: center;
+			transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+		}
+
+		.navs a i {
+			margin-right: 8px;
+		}
+
+		.navs a:hover,
+		.navs li.active a {
+			background: linear-gradient(90deg, var(--accent-orange), var(--light-orange));
+			box-shadow: 0 2px 8px rgba(255, 159, 59, 0.2);
+			transform: translateY(-1px);
+		}
+
+		/* 移动端适配 */
+		@media (max-width: 768px) {
+			#nav-toggle {
+				display: block;
+			}
+
+			.navs {
+				max-height: 0;
+				overflow: hidden;
+				transition: max-height 0.3s ease;
+				width: 100%;
+				display: flex;
+				flex-direction: column;
+				align-items: flex-start;
+				position: absolute;
+				top: 80px;
+				left: 0;
+				background: rgba(255,255,255,0.95);
+				border-radius: 0 0 16px 16px;
+				box-shadow: 0 8px 16px rgba(0,0,0,0.1);
+			}
+
+			.navs.show {
+				max-height: 600px;
+			}
+
+			.navs ul {
+				flex-direction: column;
+				width: 100%;
+				padding: 16px 0;
+			}
+
+			.navs li {
+				width: 100%;
+				text-align: left;
+				padding: 0 24px;
+				margin: 8px 0;
+			}
+
+			.navs a {
+				color: var(--neutral-dark);
+				padding: 12px 16px;
+				background: transparent;
+			}
+
+			.navs a:hover,
+			.navs li.active a {
+				color: #fff;
+			}
+		}
+
+		/* iframe区域美化 */
+		#iframe {
+			position: fixed;
+			top: 88px;
+			bottom: 64px;
+			left: 16px;
+			right: 16px;
+			width: calc(100% - 32px);
+			height: calc(100% - 152px);
+			border: none;
+			border-radius: 16px;
+			box-shadow: 0 4px 24px rgba(0,0,0,0.08);
+			background: #fff;
+			transition: all 0.3s ease;
+		}
+
+		/* 底部栏美化 */
+		#tabbar {
+			background: linear-gradient(90deg, var(--primary-blue), var(--secondary-blue));
+			box-shadow: 0 -2px 8px rgba(74, 144, 226, 0.1);
+			position: fixed;
+			bottom: 0;
+			width: 100%;
+			height: 56px;
+			display: flex;
+			justify-content: center;
+			align-items: center;
+			padding: 12px 0;
+			font-size: 14px;
+			color: rgba(255,255,255,0.9);
+		}
+
+		#tabbar span {
+			margin: 0 8px;
+			display: inline-flex;
+			align-items: center;
+		}
+
+		#tabbar a {
+			color: var(--light-orange);
+			text-decoration: none;
+			margin-left: 4px;
+			transition: color 0.2s;
+		}
+
+		#tabbar a:hover {
+			color: var(--accent-orange);
+		}
+
+		/* 加载动画 */
+		.loading-mask {
+			position: fixed;
+			top: 88px;
+			left: 16px;
+			right: 16px;
+			bottom: 64px;
+			background: rgba(255,255,255,0.8);
+			border-radius: 16px;
+			display: flex;
+			justify-content: center;
+			align-items: center;
+			z-index: 1000;
+			transition: opacity 0.3s ease;
+		}
+
+		.loading-spinner {
+			width: 48px;
+			height: 48px;
+			border: 4px solid var(--primary-blue);
+			border-bottom-color: transparent;
+			border-radius: 50%;
+			animation: loading-rotate 1s linear infinite;
+		}
+
+		@keyframes loading-rotate {
+			0% { transform: rotate(0deg); }
+			100% { transform: rotate(360deg); }
+		}
+	</style>
+</head>
+<body>
+
+<div id="header">
+	<div class="nav-logo">
+		<img src="./img/logo.svg" alt="智启学涯智慧教育平台">
+	</div>
+	<button id="nav-toggle">&#9776;</button>
+	<div class="navs" :class="{show: showNav}">
+		<ul>
+			<li :class="{active: current === '首页'}">
+				<a href="javascript:void(0)" @click="navPage('首页', './pages/home/home.html')">
+					<i class="fa fa-home"></i>首页
+				</a>
+			</li>
+			<li v-for="(item, index) in indexNav" :key="index" :class="{active: current === item.name}">
+				<a href="javascript:void(0)" @click="navPage(item.name, item.url)">
+					<i class="fa fa-book"></i>{{ item.name }}
+				</a>
+			</li>
+			<li :class="{active: current === '个人中心'}">
+				<a href="javascript:void(0)" @click="centerPage()">
+					<i class="fa fa-user"></i>个人中心
+				</a>
+			</li>
+			<li>
+				<a :href="adminurl" target="_blank">
+					<i class="fa fa-cog"></i>后台管理
+				</a>
+			</li>
+		</ul>
+	</div>
+</div>
+
+<div class="loading-mask" id="loading-mask">
+	<div class="loading-spinner"></div>
+</div>
+
+<iframe id="iframe" src=""></iframe>
+
+<div id="tabbar">
+	<span>©2025 智启学涯终身学习平台 版权所有</span>
+	<span>浙ICP备12345678号</span>
+	<span>
+        <a href="javascript:void(0)">隐私政策</a>
+        <a href="javascript:void(0)">使用条款</a>
+    </span>
+</div>
+
+<script src="./xznstatic/js/jquery-1.11.3.min.js"></script>
+<script src="./layui/layui.js"></script>
+<script src="./js/vue.js"></script>
+<script src="./js/config.js"></script>
+
+<script>
+	// 监听页面滚动，修改导航栏样式
+	window.addEventListener('scroll', function() {
+		const header = document.getElementById('header');
+		if (window.scrollY > 10) {
+			header.classList.add('scroll');
+		} else {
+			header.classList.remove('scroll');
+		}
+	});
+
+	// 页面加载完成后隐藏加载动画
+	window.addEventListener('load', function() {
+		setTimeout(() => {
+			const loadingMask = document.getElementById('loading-mask');
+			loadingMask.style.opacity = '0';
+			setTimeout(() => {
+				loadingMask.style.display = 'none';
+			}, 300);
+		}, 500);
+	});
+
+	new Vue({
+		el: '#header',
+		data: {
+			indexNav: indexNav,
+			adminurl: adminurl,
+			cartFlag: cartFlag,
+			chatFlag: chatFlag,
+			current: '首页',
+			showNav: false
+		},
+		mounted() {
+			const storedUrl = localStorage.getItem('iframeUrl') || './pages/home/home.html';
+			document.getElementById('iframe').src = storedUrl;
+
+			// 监听iframe加载事件
+			const iframe = document.getElementById('iframe');
+			iframe.addEventListener('load', function() {
+				const loadingMask = document.getElementById('loading-mask');
+				loadingMask.style.opacity = '0';
+				setTimeout(() => {
+					loadingMask.style.display = 'none';
+				}, 300);
+			});
+		},
+		methods: {
+			toggleNav() {
+				this.showNav = !this.showNav;
+			},
+			navPage(name, url) {
+				const loadingMask = document.getElementById('loading-mask');
+				loadingMask.style.display = 'flex';
+				loadingMask.style.opacity = '1';
+
+				this.current = name;
+				localStorage.setItem('iframeUrl', url);
+				document.getElementById('iframe').src = url;
+				this.showNav = false;
+			},
+			centerPage() {
+				const loadingMask = document.getElementById('loading-mask');
+				loadingMask.style.display = 'flex';
+				loadingMask.style.opacity = '1';
+
+				var userTable = localStorage.getItem('userTable');
+				if (userTable) {
+					var url = './pages/' + userTable + '/center.html';
+					this.current = '个人中心';
+					localStorage.setItem('iframeUrl', url);
+					document.getElementById('iframe').src = url;
+				} else {
+					window.location.href = './pages/login/login.html';
+				}
+			}
+		}
+	});
+</script>
+
+</body>
+</html>
