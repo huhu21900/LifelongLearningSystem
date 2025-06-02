@@ -37,7 +37,7 @@ import com.utils.CommonUtil;
 
 
 /**
- * 课程信息评论表
+ * 课程信息评论
  * 后端接口
  */
 @RestController

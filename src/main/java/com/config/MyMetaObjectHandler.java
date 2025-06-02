@@ -23,6 +23,6 @@ public class MyMetaObjectHandler extends MetaObjectHandler {
 
     @Override
     public void updateFill(MetaObject metaObject) {
-        // 关闭更新填充、这里不执行
+        // 关闭更新填充这里不执行
     }
 }

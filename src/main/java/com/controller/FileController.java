@@ -33,7 +33,7 @@ public class FileController{
 	@Autowired
     private ConfigService configService;
 	/**
-	 * 上传文件
+	 * 上传
 	 */
 	@RequestMapping("/upload")
 	public R upload(@RequestParam("file") MultipartFile file, String type,HttpServletRequest request) throws Exception {

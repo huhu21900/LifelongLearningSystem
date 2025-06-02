@@ -39,6 +39,7 @@ import com.utils.CommonUtil;
 /**
  * 收藏表
  * 后端接口
+ *
  */
 @RestController
 @RequestMapping("/storeup")

@@ -22,6 +22,7 @@ import com.utils.R;
 
 /**
  * 权限(Token)验证
+ *
  */
 @Component
 public class AuthorizationInterceptor implements HandlerInterceptor {
