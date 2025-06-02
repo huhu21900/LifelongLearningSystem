@@ -10,7 +10,7 @@ import java.io.Serializable;
  
 
 /**
- * 课程信息评论表
+ * 课程信息评论
  * 接收传参的实体类
  */
 public class DiscusskechengxinxiModel  implements Serializable {

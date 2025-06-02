@@ -11,7 +11,7 @@ import java.io.Serializable;
 
 /**
  * 试题表
- * 接收传参的实体类
+ * 接收传参实体类
  */
 public class ExamquestionModel  implements Serializable {
 	private static final long serialVersionUID = 1L;
